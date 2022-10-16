@@ -1,0 +1,67 @@
+def get_digits_sum(n:int)->int: # находит сумму цифр в числе
+
+  if(n==0):
+    return 0
+
+  sum = n % 10
+  while(n > 0):    
+    n = n // 10
+    sum += n % 10
+          
+  return sum
+  
+##############################
+  
+def get_groups_map(n_customers:int): # функция, которая подсчитывает число покупателей, попадающих в каждую группу, если нумерация ID сквозная и начинается с 0
+  
+  results = {}
+  if(n_customers<0):
+    return results
+
+  for i in range(n_customers):
+    sum = get_sum(i)
+    if(sum in results):
+      results[sum] = results[sum]+1
+    else:
+      results[sum] = 1
+
+  return results # возвращаем словарь
+  
+##############################
+  
+def get_groups_map_first_id(n_customers:int, n_first_id:int): # функция, аналогичная первой, если ID начинается с произвольного числа
+
+  results = {}
+  if(n_first_id>=n_customers):
+    return results
+
+  for i in range(n_first_id,n_customers):
+    sum = get_sum(i)
+    if(sum in results):
+      results[sum] = results[sum]+1
+    else:
+      results[sum] = 1
+
+  return results # возвращаем словарь
+  
+##############################
+  
+# Бонус!
+def get_group(n_customers:int)->int: # хитрая функция для быстрого подсчёта количества групп
+
+  if(n_customers<=0):
+    return 0  
+
+  count_digits = 0 # будущее количество цифр в числе
+  sum = n_customers%10 # будущая cумма цифр в числе
+  left_digit = 0 # будущая цифра в старшем разряде
+
+  while(n_customers > 0):
+    left_digit = n_customers
+    n_customers = n_customers // 10
+    sum += n_customers%10
+    count_digits += 1
+
+  result = left_digit+(count_digits*9)-10 # (возможная максимальная сумма цифр) = (старший разряд-1)+(количество цифр-1)*9 = (старший разряд)+(количество цифр)-10
+  
+  return result if result>sum else sum
